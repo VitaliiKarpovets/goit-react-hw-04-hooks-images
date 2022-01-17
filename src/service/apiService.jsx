@@ -1,21 +1,24 @@
-import PropTypes from "prop-types";
-
 const KEY = '24153466-6db5b8c6d878fe3d168a5052f';
 const BASE_URL = 'https://pixabay.com/api/';
 
-export default function fetchImages(query, page) {
-  return fetch(
-    `${BASE_URL}?q=${query}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-  ).then(response => {
-    if (response.ok) {
-      return response.json();
-    }
-    return Promise.reject(new Error('Incorrect request! Please, try again.'));
-  });
+export default async function pixabayApi(query, page = 1) {
+  try {
+    const response = await fetch(
+      `${BASE_URL}?key=${KEY}&q=${query}&page=${page}&image_type=photo&orientation=horizontal&per_page=12`,
+    );
+
+    if (!response.ok)
+      throw Error('Oooops, anything did not work. Try again :)');
+
+    const parsedResponse = await response.json();
+
+    if (!parsedResponse.totalHits)
+      throw Error(
+        `Incorrect request! Please, try again.`,
+      );
+
+    return parsedResponse;
+  } catch (error) {
+    throw error;
+  }
 }
-
-fetchImages.propTypes = {
-  query: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-};
-
