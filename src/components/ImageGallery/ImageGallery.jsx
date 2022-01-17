@@ -11,7 +11,6 @@ export default function ImageGallery({ query, page, setPage }) {
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
   const [images, setImages] = useState([]);
-  // const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [imageURL, setImageURL] = useState({});
 
